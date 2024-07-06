@@ -1,0 +1,8 @@
+sind die means der arme schon nah beieinander genug oder noch kleiner machen? 0.85 und 0.9? Varianten fürs Dashboard einfügen?
+langfristig überlegen, wie varianz des suboptimalen armes gestaltet werden sollte
+wie sollte regret in expected (summe regret suboptimal arme) und in actual ((optimaler arm = 0) - regret des gezogenen rewards) unterteilen?
+in algorithmen ab ucb-normal rundungsfehler der rewards behandeln
+time horizons komplett ausführen
+alles bis ucb-normal: Dateipfad csv ändern
+wann regret gerundet: überarbeiten
+
