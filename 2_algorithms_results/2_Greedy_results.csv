@@ -1,4 +1,4 @@
-Timestep,Iteration,Total Reward,Suboptimal Arms,Regret,Zeros Count,Ones Count
+Timestep,Iteration,Total Reward,Suboptimal Arms,Total Regret,Zeros Count,Ones Count
 2,1,1,0,0.0,1.0,1.0
 3,1,2,0,0.0,1.0,2.0
 100,1,88,10,1.0,12.0,88.0
