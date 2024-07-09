@@ -150,9 +150,10 @@ app.layout = html.Div(
      Output('plot3', 'figure'),
      Output('plot4', 'figure'),
      Output('plot6', 'figure')],
-    [Input('selected_algorithm', 'value')]
+    [Input('selected_algorithm', 'value'),
+      Input('alpha', 'value')]
 )
-def update_plots(selected_algorithm):
+def update_plots(selected_algorithm, selected_alpha):
     # Daten laden
     data = {}
     for algo in algorithm_data:
@@ -169,7 +170,15 @@ def update_plots(selected_algorithm):
             name=algo,
             line=dict(color=color)
         ))
-    fig1.update_layout(title='Fig. 1: Average Total Reward over Timesteps', paper_bgcolor='white', plot_bgcolor='white', font={'color': 'black'})
+    fig1.update_layout(
+        title='Fig. 1: Average Total Reward over Timesteps',
+        xaxis_title="Timesteps",
+        yaxis_title="Average Total Reward",
+        paper_bgcolor='white',
+        plot_bgcolor='white',
+        font={'color': 'black'},
+        showlegend=False
+    )
 
     # Plot 2: Average Regret
     fig2 = go.Figure()
@@ -182,7 +191,15 @@ def update_plots(selected_algorithm):
             name=algo,
             line=dict(color=color)
         ))
-    fig2.update_layout(title='Fig.2: Average Total Regret over Timesteps', paper_bgcolor='white', plot_bgcolor='white', font={'color': 'black'})
+    fig2.update_layout(
+        title='Fig.2: Average Total Regret over Timesteps',
+        xaxis_title="Timesteps",
+        yaxis_title="Average Total Regret",
+        paper_bgcolor='white',
+        plot_bgcolor='white',
+        font={'color': 'black'},
+        showlegend=False
+    )
 
     # Plot 3: Boxplot
     fig3 = go.Figure()
@@ -195,22 +212,68 @@ def update_plots(selected_algorithm):
         ))
         fig3.add_trace(go.Box(
             y=[df['Average Ones Count'].iloc[-1]],
-            name=f'{algo} - Ones',                                                                                                                                                    # einzelne balken falschrum, nicht der richtige wert
+            name=f'{algo} - Ones',
             marker_color=color
         ))
-    fig3.update_layout(title='Fig.3: Count of Zeros and Ones', paper_bgcolor='white', plot_bgcolor='white', font={'color': 'black'})
+    fig3.update_layout(
+        title='Fig.3: Count of Zeros and Ones',
+        xaxis_title="Zeros and Ones",
+        yaxis_title="Count",
+        paper_bgcolor='white',
+        plot_bgcolor='white',
+        font={'color': 'black'},
+        showlegend=False
+    )
 
     # Plot 4: Distribution of Total Regret at Timestep 100000
     selected_data = data[selected_algorithm][0]
-    df_100k = selected_data[selected_data['Timestep'] == 100000]                                                                                                                      # schleife funktiniert noch nicht
-    fig4 = go.Figure(go.Histogram(x=df_100k['Total Regret'], marker_color='blue'))
-    fig4.update_layout(title='Distribution of Total Regret at Timestep 100.000',  paper_bgcolor='white', plot_bgcolor='white', font={'color': 'black'}) # for chosen algorithm hinzufügen
+    df_100k = selected_data[selected_data['Timestep'] == 100000]
+    fig4 = go.Figure(go.Histogram(x=df_100k['Total Regret'], marker_color=colors[algorithm_data.index(selected_algorithm)]))
+    fig4.update_layout(
+        title=f'Distribution of Total Regret at Timestep 100.000 for {selected_algorithm}',
+        xaxis_title="Total Regret",
+        yaxis_title="Count",
+        paper_bgcolor='white',
+        plot_bgcolor='white',
+        font={'color': 'black'},
+        showlegend=False
+    )
 
+# Plot 5: Value at Risk Function
+    fig5 = go.Figure()
+    for algo, color in zip(algorithm_data, colors):
+        df = data[algo][0]
+        timesteps = df['Timestep'].unique()
+        VaR_values = [df[df['Timestep'] == t]['Total Regret'].quantile(1 - selected_alpha) for t in timesteps]
+        fig5.add_trace(go.Scatter(
+            x=timesteps,
+            y=VaR_values,
+            mode='lines+markers',
+            name=algo,
+            line=dict(color=color)
+        ))
 
-    # Plot 5:
-    # einfügen
-
-
+    # Plot 5: Value at Risk Function
+    # fig5 = go.Figure()
+    # for algo, color in zip(algorithm_data, colors):
+    #     df = data[algo][1]
+    #     VaR_values = df.groupby('Timestep')['Average Regret'].apply(lambda x: x.quantile(selected_alpha))
+    #     fig5.add_trace(go.Scatter(
+    #         x=df['Timestep'].unique(),
+    #         y=VaR_values,
+    #         mode='lines+markers',
+    #         name=algo,
+    #         line=dict(color=color)
+    #     ))
+    fig5.update_layout(
+        title=f'Value at Risk for selected alpha={selected_alpha}',
+        xaxis_title="Timesteps",
+        yaxis_title="Value at Risk",
+        paper_bgcolor='white',
+        plot_bgcolor='white',
+        font={'color': 'black'},
+        showlegend=False
+    )
 
     # Plot 6: Fraction of Suboptimal Arms Pulled
     fig6 = go.Figure()
@@ -223,9 +286,18 @@ def update_plots(selected_algorithm):
             name=algo,
             line=dict(color=color)
         ))
-    fig6.update_layout(title='Proportion of Suboptimal Arms pulled in comparison to all Arms pulled', paper_bgcolor='white', plot_bgcolor='white', font={'color': 'black'})
+    fig6.update_layout(
+        title='Proportion of Suboptimal Arms pulled in comparison to all Arms pulled',
+        xaxis_title="Timesteps",
+        yaxis_title="Proportion of Suboptimal Arms",
+        paper_bgcolor='white',
+        plot_bgcolor='white',
+        font={'color': 'black'},
+        showlegend=False
+    )
 
-    return fig1, fig2, fig3, fig4, fig6
+
+    return fig1, fig2, fig3, fig4, fig5, fig6
 
 # Main Funktion um die App zu starten
 if __name__ == '__main__':

@@ -1,7 +1,5 @@
 Heute:
 
-berechnung des actual regrets einfügen für alle algorithmen
-
 plot 5 einfügen und restliche plots korrigieren
 
 alle algorithmen opt arm mit 0.8 und 0.9 durchlaufen lassen, als _opt_version1 speichern
