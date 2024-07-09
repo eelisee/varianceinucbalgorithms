@@ -1,4 +1,8 @@
+Heute:
+
 berechnung des actual regrets einfügen für alle algorithmen
+
+plot 5 einfügen und restliche plots korrigieren
 
 alle algorithmen opt arm mit 0.8 und 0.9 durchlaufen lassen, als _opt_version1 speichern
 alle algorithmen opt armmit 0.895 und 0.9 durchlaufen lassen, als _opt_verison2 speichern
@@ -11,6 +15,8 @@ alle algorithmen subopt arm mit 0.495 und 0.5 durchlaufen lassen, als _subopt_ve
 dashboard opt und wahl der algorithmen und arme verknüpfen
 graph für actual regret einfügen
 _________________________________
+
+Mittwoch:
 
 BA:
 Einleitung als neuer abschnitt davor: 
@@ -27,4 +33,4 @@ Simulation of the algorithm: Implementierung der Algorithmen und Besonderheiten 
     Dashboard erklären (Bennennnung dessen was umgesetzt ist), in welchen varianten
 exp-exp tradeoff: Dashboard Plots mit Daten beschreiben (für alle fälle)
 
-
+Donnerstag: vorschrieb überarbeiten, Leif Leseprobe schicken
