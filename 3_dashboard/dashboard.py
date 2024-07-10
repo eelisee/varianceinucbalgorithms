@@ -88,12 +88,12 @@ app.layout = html.Div(
                                     ],
                                     value='dist1'
                                 ),
-                                html.Label('Erster Zug'),
+                                html.Label('Reihenfolge'),
                                 dcc.Dropdown(
                                     id='first_move',
                                     options=[
-                                        {'label': 'Optimaler Arm', 'value': 'optimal'},
-                                        {'label': 'Anderer Arm', 'value': 'other'}
+                                        {'label': 'Optimaler Arm, suboptimaler Arm', 'value': 'optimal'},
+                                        {'label': 'Suboptimaler Arm, optimaler Arm', 'value': 'other'}
                                     ],
                                     value='optimal'
                                 ),
