@@ -1,8 +1,7 @@
 Heute:
 
-plot 5 einfügen und restliche plots korrigieren
 
-alle algorithmen opt arm mit 0.8 und 0.9 durchlaufen lassen, als _opt_version1 speichern (8,9)
+
 alle algorithmen opt armmit 0.895 und 0.9 durchlaufen lassen, als _opt_verison2 speichern
 alle algorithmen opt arm mit 0.495 und 0.5 durchlaufen lassen, als _opt_version 3 speichern
 
@@ -10,29 +9,41 @@ alle algorithmen subopt arm mit 0.8 und 0.9 durchlaufen lassen, als _subopt_vers
 alle algorithmen subopt armmit 0.895 und 0.9 durchlaufen lassen, als _subopt_verison2 speichern
 alle algorithmen subopt arm mit 0.495 und 0.5 durchlaufen lassen, als _subopt_version 3 speichern
 
-gaussian distributed arms hinzufügen?
-
-dashboard opt und wahl der algorithmen und arme verknüpfen
-graph für actual regret einfügen
 _________________________________
 
-BA:
-
-vemrutlich algorithmen vor techniques, dann dashboard direkt in techniques incooperieren.
-screenshot dashboard sowie grafiken algorithmen zur auswertung einfügen
-dashboard auf englisch übersetzen sowie sonderfälle einfügen
-
-
-Mittwoch:
-
-calculation nochmal überarbeiten in einem absatz
-Simulation of the algorithm: Implementierung der Algorithmen und Besonderheiten erklären + Dashboard theoretisch einführen
-    UCB-Normal: fällt aus der Reihe
-    UCB-Improved: umformuliert, damit vergleichbar
-    Variablen des Dashboards einführen
-    Dashboard erklären (Bennennnung dessen was umgesetzt ist), in welchen varianten
-exp-exp tradeoff: Dashboard Plots mit Daten beschreiben (für alle fälle)
-
-subopt laufen lassen, leif fragen was mit related work
 
 Donnerstag: vorschrieb überarbeiten, Leif Leseprobe schicken
+
+dashboard technisch:
+plot 5 einfügen und restliche plots korrigieren
+dashboard auf englisch übersetzen 
+sonderfälle durchschnittl. rewards var aware in dashboard und in text
+dashboard opt und wahl der algorithmen und arme verknüpfen
+
+BA:
+exp-exp tradeoff: Dashboard Plots mit Daten beschreiben (für alle fälle)
+screenshot dashboard sowie grafiken algorithmen zur auswertung einfügen
+
+
+_____________________________________
+
+zu prüfen:
+
+        % tabelle einfügen in simulation / taking variance into account: für vergleich zwischen algorithmen nach Kriterien aus Kapitel 4
+% pseudoregret und regret zu regret vereiheitlichen (eh gleich wenn erwartungswert darüber gebildet)
+% Q stern = X_kstern,t. also alles einheitlich mit X_kstern benennen, Begründung für gleichheit löschen, einfach ersetzen
+% zu erledigen für die ganze arbeit: quellen/zitierweise, bezug zur subsection davor bei jedem unterkapitel einfügen
+% iid random variables X benennen, zumindest für Kapitel 3 nochmal
+% alles über Kapitel 3: notation von X_a(t) zu X_{k,t} ändern überprüfen sodass einheitlichn, Zeiten von i = 1 , ... t / bzw t = 1 bis n, Arme a wenn einzeln oder von k = 1, ..., K
+%beweise ausführen: nachvollziehen, fehlende schritte ergänzen, jedes == beschriften
+% auf plagiat und AI wörter prüfen
+% nur cases wo time horizon n known, actions A1,...An zu A1,...Ak sowie Rewards X1,...Xk anpassen?
+% chapter vs section vs subsection benennung
+% prüfen auf amerkanische / britische schreibwweise
+% bene fragen wir/ich perspektive
+% present / past tense
+% bezeichnungen im algorithmus ändern nach simulation techniques, code schick machen und auf github readme und requirements einfügen
+% doppelte fragezeichen ausfüllen
+% EUCBV einrückung algorithmus anpassen
+% dashboard png updaten, in text einschließen
+% sobald alle daten durchlaufen, durchschnitt einfügen für variance aware vs nicht variance aware (als haken auswählbar, einfügen in erläuterungen.

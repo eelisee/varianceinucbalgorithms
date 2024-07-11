@@ -50,8 +50,8 @@ def create_dummy_plot(title):
 
 # Funktion zum Laden der Daten
 def load_data(algorithm):
-    results_path = os.path.join(base_path, f"{algorithm}_results.csv")
-    average_results_path = os.path.join(base_path, f"{algorithm}_average_results.csv")
+    results_path = os.path.join(base_path, f"{algorithm}_results_opt_ver1.csv")
+    average_results_path = os.path.join(base_path, f"{algorithm}_average_results_opt_ver1.csv")
 
     df_results = pd.read_csv(results_path)
     df_average = pd.read_csv(average_results_path)
@@ -105,7 +105,7 @@ app.layout = html.Div(
                                         {'label': '0.05', 'value': '0.05'},
                                         {'label': '0.1', 'value': '0.1'}
                                     ],
-                                    value='0.01'
+                                    value='0.05'
                                 ),
                                 html.Label('Algorithmus auswählen'),
                                 dcc.Dropdown(
@@ -149,6 +149,7 @@ app.layout = html.Div(
      Output('plot2', 'figure'),
      Output('plot3', 'figure'),
      Output('plot4', 'figure'),
+     Output('plot5', 'figure'),
      Output('plot6', 'figure')],
     [Input('selected_algorithm', 'value'),
       Input('alpha', 'value')]
@@ -297,7 +298,7 @@ def update_plots(selected_algorithm, selected_alpha):
     )
 
 
-    return fig1, fig2, fig3, fig4, fig5, fig6
+    return fig1, fig2, fig3, fig4, fig6
 
 # Main Funktion um die App zu starten
 if __name__ == '__main__':
