@@ -1,18 +1,9 @@
 Heute:
-
-
-
-alle algorithmen opt armmit 0.895 und 0.9 durchlaufen lassen, als _opt_verison2 speichern
 alle algorithmen opt arm mit 0.495 und 0.5 durchlaufen lassen, als _opt_version 3 speichern
-
-alle algorithmen subopt arm mit 0.8 und 0.9 durchlaufen lassen, als _subopt_version1 speichern
-alle algorithmen subopt armmit 0.895 und 0.9 durchlaufen lassen, als _subopt_verison2 speichern
 alle algorithmen subopt arm mit 0.495 und 0.5 durchlaufen lassen, als _subopt_version 3 speichern
 
-_________________________________
-
-
-Donnerstag: vorschrieb überarbeiten, Leif Leseprobe schicken
+vorschrieb überarbeiten Kap ,
+Leif Leseprobe schicken
 
 dashboard technisch:
 plot 5 einfügen und restliche plots korrigieren
@@ -24,13 +15,7 @@ BA:
 exp-exp tradeoff: Dashboard Plots mit Daten beschreiben (für alle fälle)
 screenshot dashboard sowie grafiken algorithmen zur auswertung einfügen
 
-
-_____________________________________
-
-zu prüfen:
-
-        % tabelle einfügen in simulation / taking variance into account: für vergleich zwischen algorithmen nach Kriterien aus Kapitel 4
-% pseudoregret und regret zu regret vereiheitlichen (eh gleich wenn erwartungswert darüber gebildet)
+pseudoregret und regret zu regret vereiheitlichen (eh gleich wenn erwartungswert darüber gebildet)
 % Q stern = X_kstern,t. also alles einheitlich mit X_kstern benennen, Begründung für gleichheit löschen, einfach ersetzen
 % zu erledigen für die ganze arbeit: quellen/zitierweise, bezug zur subsection davor bei jedem unterkapitel einfügen
 % iid random variables X benennen, zumindest für Kapitel 3 nochmal
@@ -45,5 +30,12 @@ zu prüfen:
 % bezeichnungen im algorithmus ändern nach simulation techniques, code schick machen und auf github readme und requirements einfügen
 % doppelte fragezeichen ausfüllen
 % EUCBV einrückung algorithmus anpassen
-% dashboard png updaten, in text einschließen
+%
+
+_____________________________________
+
+weitere Ideen:
+
+% tabelle einfügen in simulation / taking variance into account: für vergleich zwischen algorithmen nach Kriterien aus Kapitel 4
+%  dashboard png updaten, in text einschließen
 % sobald alle daten durchlaufen, durchschnitt einfügen für variance aware vs nicht variance aware (als haken auswählbar, einfügen in erläuterungen.
