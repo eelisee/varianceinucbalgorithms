@@ -13,23 +13,15 @@ app.title = "Simulation of variance-aware algorithms for Stochastic Bandit Probl
 # Dateipfade der CSV-Dateien
 base_path = r"C:/Users/canis/OneDrive/Dokumente/uni/uni-surface/FSS 2024/BA/bachelorarbeit_vrlfg/BA/github/BA_code/2_algorithms_results"
 algorithm_data= [
-    "1_ETC", "2_Greedy", "3_UCB"
+    "1_ETC", "2_Greedy", "3_UCB", "4_UCB-Normal", "5_UCB-V", "6_UCB-Tuned", "7_PAC-UCB", "8_UCB-Improved", "9_EUCBV"
 ]
 
 algorithms = [
-    "ETC", "Greedy", "UCB"
+    "ETC", "Greedy", "UCB", "UCB-Normal", "UCB-V", "UCB-Tuned", "PAC-UCB", "UCB-Improved", "EUCBV"
 ]
 colors = [
-    'blue', 'green', 'red'
+    'blue', 'green', 'red', 'cyan', 'magenta', 'yellow', 'black', 'orange', 'purple'
 ]
-
-# wenn alle fertig durchgelaufen, dann alle hinzufügen
-#algorithms = [
-#     "1_ETC", "2_Greedy", "3_UCB", "4_UCB-Normal", "5_UCB-V", "6_UCB-Tuned", "7_PAC-UCB", "8_UCB-Improved", "9_EUCBV"
-# ]
-# colors = [
-#     'blue', 'green', 'red', 'cyan', 'magenta', 'yellow', 'black', 'orange', 'purple'
-# ]
 
 # Dummy-Plot Funktion
 def create_dummy_plot(title):
@@ -49,9 +41,9 @@ def create_dummy_plot(title):
     )
 
 # Funktion zum Laden der Daten
-def load_data(algorithm):
-    results_path = os.path.join(base_path, f"{algorithm}_results_opt_ver1.csv")
-    average_results_path = os.path.join(base_path, f"{algorithm}_average_results_opt_ver1.csv")
+def load_data(algorithm, arm_distribution, first_move):
+    results_path = os.path.join(base_path, f"{algorithm}_results_{first_move}_ver{arm_distribution}.csv")
+    average_results_path = os.path.join(base_path, f"{algorithm}_average_results_{first_move}_ver{arm_distribution}.csv")
 
     df_results = pd.read_csv(results_path)
     df_average = pd.read_csv(average_results_path)
@@ -82,20 +74,24 @@ app.layout = html.Div(
                                 dcc.Dropdown(
                                     id='arm_distribution',
                                     options=[
-                                        {'label': '2 Arme mit jeweils bernoulliverteilten Rewards mit mean [0.9, 0.8]', 'value': 'dist1'},
-                                        {'label': '2 Arme mit jeweils bernoulliverteilten Rewards mit mean [0.9, 0.895]', 'value': 'dist2'},
-                                        {'label': '2 Arme mit jeweils bernoulliverteilten Rewards mit mean [0.5, 0.495]', 'value': 'dist3'}
+                                        {'label': '2 Arme mit jeweils bernoulliverteilten Rewards mit mean [0.9, 0.8]', 'value': '1'},
+                                        {'label': '2 Arme mit jeweils bernoulliverteilten Rewards mit mean [0.9, 0.895]', 'value': '2'},
+                                        {'label': '2 Arme mit jeweils bernoulliverteilten Rewards mit mean [0.5, 0.495]', 'value': '3'}
                                     ],
-                                    value='dist1'
+                                    placeholder='Select...',  # Dies entfernt die "Select..."-Option
+                                    clearable=False,
+                                    value='1'
                                 ),
                                 html.Label('Reihenfolge'),
                                 dcc.Dropdown(
                                     id='first_move',
                                     options=[
-                                        {'label': 'Optimaler Arm, suboptimaler Arm', 'value': 'optimal'},
-                                        {'label': 'Suboptimaler Arm, optimaler Arm', 'value': 'other'}
+                                        {'label': 'Optimaler Arm, suboptimaler Arm', 'value': 'opt'},
+                                        {'label': 'Suboptimaler Arm, optimaler Arm', 'value': 'subopt'}
                                     ],
-                                    value='optimal'
+                                    placeholder='Select...',  # Dies entfernt die "Select..."-Option
+                                    clearable=False,
+                                    value='opt'
                                 ),
                                 html.Label('Alpha'),
                                 dcc.Dropdown(
@@ -105,12 +101,16 @@ app.layout = html.Div(
                                         {'label': '0.05', 'value': '0.05'},
                                         {'label': '0.1', 'value': '0.1'}
                                     ],
+                                    placeholder='Select...',  # Dies entfernt die "Select..."-Option
+                                    clearable=False,
                                     value='0.05'
                                 ),
                                 html.Label('Algorithmus auswählen'),
                                 dcc.Dropdown(
                                     id='selected_algorithm',
                                     options=[{'label': algo, 'value': algo} for algo in algorithm_data],
+                                    placeholder='Select...',  # Dies entfernt die "Select..."-Option
+                                    clearable=False, # Optionen können nicht abgewählt werden
                                     value='3_UCB'
                                 ),
                             ]
@@ -132,7 +132,7 @@ app.layout = html.Div(
                                 html.Div(style={'flex': '1 1 30%', 'padding': '10px'}, children=[dcc.Graph(id='plot2')]),
                                 html.Div(style={'flex': '1 1 30%', 'padding': '10px'}, children=[dcc.Graph(id='plot3')]),
                                 html.Div(style={'flex': '1 1 30%', 'padding': '10px'}, children=[dcc.Graph(id='plot4')]),
-                                html.Div(style={'flex': '1 1 30%', 'padding': '10px'}, children=[create_dummy_plot("Plot 5")]),
+                                html.Div(style={'flex': '1 1 30%', 'padding': '10px'}, children=[dcc.Graph(id='plot5')]),
                                 html.Div(style={'flex': '1 1 30%', 'padding': '10px'}, children=[dcc.Graph(id='plot6')])
                             ]
                         )
@@ -149,16 +149,18 @@ app.layout = html.Div(
      Output('plot2', 'figure'),
      Output('plot3', 'figure'),
      Output('plot4', 'figure'),
-     Output('plot5', 'figure'),
+     #Output('plot5', 'figure'),
      Output('plot6', 'figure')],
     [Input('selected_algorithm', 'value'),
-      Input('alpha', 'value')]
+     Input('arm_distribution', 'value'),
+     Input('first_move', 'value'),
+     Input('alpha', 'value')]
 )
-def update_plots(selected_algorithm, selected_alpha):
+def update_plots(selected_algorithm, arm_distribution, first_move, selected_alpha):
     # Daten laden
     data = {}
     for algo in algorithm_data:
-        data[algo] = load_data(algo)
+        data[algo] = load_data(algo, arm_distribution, first_move)
 
     # Plot 1: Average Total Reward
     fig1 = go.Figure()
@@ -226,7 +228,7 @@ def update_plots(selected_algorithm, selected_alpha):
         showlegend=False
     )
 
-    # Plot 4: Distribution of Total Regret at Timestep 100000
+     # Plot 4: Distribution of Total Regret at Timestep 100000
     selected_data = data[selected_algorithm][0]
     df_100k = selected_data[selected_data['Timestep'] == 100000]
     fig4 = go.Figure(go.Histogram(x=df_100k['Total Regret'], marker_color=colors[algorithm_data.index(selected_algorithm)]))
@@ -240,19 +242,33 @@ def update_plots(selected_algorithm, selected_alpha):
         showlegend=False
     )
 
-# Plot 5: Value at Risk Function
-    fig5 = go.Figure()
-    for algo, color in zip(algorithm_data, colors):
-        df = data[algo][0]
-        timesteps = df['Timestep'].unique()
-        VaR_values = [df[df['Timestep'] == t]['Total Regret'].quantile(1 - selected_alpha) for t in timesteps]
-        fig5.add_trace(go.Scatter(
-            x=timesteps,
-            y=VaR_values,
-            mode='lines+markers',
-            name=algo,
-            line=dict(color=color)
-        ))
+    # Plot 4: Distribution of Total Regret at Timestep 100000
+    # selected_data = data[selected_algorithm][0]
+    # df_100k = selected_data[selected_data['Timestep'] == 100000]
+    # fig4 = go.Figure(go.Histogram(x=df_100k['Total Regret'], marker_color=colors[algorithm_data.index(selected_algorithm)]))
+    # fig4.update_layout(
+    #     title=f'Distribution of Total Regret at Timestep 100.000 for {selected_algorithm}',
+    #     xaxis_title="Total Regret",
+    #     yaxis_title="Count",
+    #     paper_bgcolor='white',
+    #     plot_bgcolor='white',
+    #     font={'color': 'black'},
+    #     showlegend=False
+    # )
+
+    # Plot 5: Value at Risk Function
+    # fig5 = go.Figure()
+    # for algo, color in zip(algorithm_data, colors):
+    #     df = data[algo][0]
+    #     timesteps = df['Timestep'].unique()
+    #     VaR_values = [df[df['Timestep'] == t]['Total Regret'].quantile(1 - selected_alpha) for t in timesteps]
+    #     fig5.add_trace(go.Scatter(
+    #         x=timesteps,
+    #         y=VaR_values,
+    #         mode='lines+markers',
+    #         name=algo,
+    #         line=dict(color=color)
+    #     ))
 
     # Plot 5: Value at Risk Function
     # fig5 = go.Figure()
@@ -266,15 +282,27 @@ def update_plots(selected_algorithm, selected_alpha):
     #         name=algo,
     #         line=dict(color=color)
     #     ))
-    fig5.update_layout(
-        title=f'Value at Risk for selected alpha={selected_alpha}',
-        xaxis_title="Timesteps",
-        yaxis_title="Value at Risk",
-        paper_bgcolor='white',
-        plot_bgcolor='white',
-        font={'color': 'black'},
-        showlegend=False
-    )
+
+    # # Plot 5: Empirical Means over Timesteps
+    # fig5 = go.Figure()
+    # for algo, color in zip(algorithm_data, colors):
+    #     df = data[algo][1]
+    #     fig5.add_trace(go.Scatter(
+    #         x=df['Timestep'],
+    #         y=df['Empirical Means'],
+    #         mode='lines+markers',
+    #         name=algo,
+    #         line=dict(color=color)
+    #     ))
+    # fig5.update_layout(
+    #     title=f'Value at Risk for selected alpha={selected_alpha}',
+    #     xaxis_title="Timesteps",
+    #     yaxis_title="Value at Risk",
+    #     paper_bgcolor='white',
+    #     plot_bgcolor='white',
+    #     font={'color': 'black'},
+    #     showlegend=False
+    # )
 
     # Plot 6: Fraction of Suboptimal Arms Pulled
     fig6 = go.Figure()
@@ -297,9 +325,11 @@ def update_plots(selected_algorithm, selected_alpha):
         showlegend=False
     )
 
-
+    
     return fig1, fig2, fig3, fig4, fig6
 
-# Main Funktion um die App zu starten
+    #return fig1, fig2, fig3, fig4, fig5, fig6
+
+# Startet die Dash App
 if __name__ == '__main__':
     app.run_server(debug=True)

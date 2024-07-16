@@ -1,17 +1,37 @@
 Heute:
-alle algorithmen opt arm mit 0.495 und 0.5 durchlaufen lassen, als _opt_version 3 speichern
-alle algorithmen subopt arm mit 0.495 und 0.5 durchlaufen lassen, als _subopt_version 3 speichern
+
+Kapitel 2 überarbeiten
+Leif Leseprobe schicken
+Dashboard fertig (plot 3, plot 5, average grafen, durchlaufen nochmal)
+Auswertung einfügen mit bild vom dashboard
+
+etc korrigieren 0.01 und durchlaufen,
+etc optimiert korrigieren und durchlaugen für opt und subopt ver1 bis ver 3
+alle udurchlaufen lassen in allen varianten
+
+plots korrigieren
+
+3- skript für durchlaufen alle algorithmen
+   average berechnen von var aware und nicht
+
+todo:
 
 vorschrieb überarbeiten Kap ,
 Leif Leseprobe schicken
 
+code:
+timehorizon nur einmal durchlaufen lassen, damit die gleichen ergebnisse erhalten für alle!
+
 dashboard technisch:
+plot 3
 plot 5 einfügen und restliche plots korrigieren
 dashboard auf englisch übersetzen 
 sonderfälle durchschnittl. rewards var aware in dashboard und in text
 dashboard opt und wahl der algorithmen und arme verknüpfen
 
 BA:
+etc: n = 1000 festlegen, macht (opt, subopt) überhaupt noch sinn?
+Benennung files üebrprüfen
 exp-exp tradeoff: Dashboard Plots mit Daten beschreiben (für alle fälle)
 screenshot dashboard sowie grafiken algorithmen zur auswertung einfügen
 
