@@ -5,8 +5,7 @@ Leif Leseprobe schicken
 Dashboard fertig (plot 3, plot 5, average grafen, durchlaufen nochmal)
 Auswertung einfügen mit bild vom dashboard
 
-etc korrigieren 0.01 und durchlaufen,
-etc optimiert korrigieren und durchlaugen für opt und subopt ver1 bis ver 3
+
 alle udurchlaufen lassen in allen varianten
 
 plots korrigieren
@@ -14,13 +13,11 @@ plots korrigieren
 3- skript für durchlaufen alle algorithmen
    average berechnen von var aware und nicht
 
+
 todo:
 
 vorschrieb überarbeiten Kap ,
 Leif Leseprobe schicken
-
-code:
-timehorizon nur einmal durchlaufen lassen, damit die gleichen ergebnisse erhalten für alle!
 
 dashboard technisch:
 plot 3
