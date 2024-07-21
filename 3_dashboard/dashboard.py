@@ -13,11 +13,11 @@ app.title = "Simulation of variance-aware algorithms for Stochastic Bandit Probl
 # Dateipfade der CSV-Dateien
 base_path = r"C:/Users/canis/OneDrive/Dokumente/uni/uni-surface/FSS 2024/BA/bachelorarbeit_vrlfg/BA/github/BA_code/2_algorithms_results"
 algorithm_data= [
-    "1_ETC", "2_Greedy", "3_UCB", "4_UCB-Normal", "5_UCB-V", "6_UCB-Tuned", "7_PAC-UCB", "8_UCB-Improved", "9_EUCBV"
+    "1_ETC", "2_Greedy", "3_UCB", "4_UCB-Normal", "5_UCB-Tuned", "6_UCB-V", "7_PAC-UCB", "8_UCB-Improved", "9_EUCBV"
 ]
 
 algorithms = [
-    "ETC", "Greedy", "UCB", "UCB-Normal", "UCB-V", "UCB-Tuned", "PAC-UCB", "UCB-Improved", "EUCBV"
+    "ETC", "Greedy", "UCB", "UCB-Normal", "UCB-Tuned", "UCB-V", "PAC-UCB", "UCB-Improved", "EUCBV"
 ]
 colors = [
     'blue', 'green', 'red', 'cyan', 'magenta', 'yellow', 'black', 'orange', 'purple'
@@ -57,7 +57,7 @@ app.layout = html.Div(
         html.Div(
             style={'textAlign': 'center', 'padding': '20px'},
             children=[
-                html.H1("Simulation of variance-aware algorithms for Stochastic Bandit Problems")
+                html.H1("Simulation of Variance-aware Algorithms for Stochastic Bandit Problems")
             ]
         ),
         html.Div(
@@ -67,29 +67,29 @@ app.layout = html.Div(
                 html.Div(
                     style={'flex': '1', 'padding': '20px', 'backgroundColor': '#f0f0f0'},
                     children=[
-                        html.H2("Einstellungen"),
+                        html.H2("Settings"),
                         html.Div(
                             children=[
-                                html.Label('Verteilung der Arme'),
+                                html.Label('Distribution of Arms'),
                                 dcc.Dropdown(
                                     id='arm_distribution',
                                     options=[
-                                        {'label': '2 Arme mit jeweils bernoulliverteilten Rewards mit mean [0.9, 0.8]', 'value': '1'},
-                                        {'label': '2 Arme mit jeweils bernoulliverteilten Rewards mit mean [0.9, 0.895]', 'value': '2'},
-                                        {'label': '2 Arme mit jeweils bernoulliverteilten Rewards mit mean [0.5, 0.495]', 'value': '3'}
+                                        {'label': '&mu* = 0.9, &mu_suboptimal = 0.8', 'value': '1'},
+                                        {'label': '&mu* = 0.9, &mu_suboptimal = 0.895', 'value': '2'},
+                                        {'label': '&mu* = 0.5, &mu_suboptimal = 0.495', 'value': '3'}
                                     ],
                                     placeholder='Select...',  # Dies entfernt die "Select..."-Option
                                     clearable=False,
                                     value='1'
                                 ),
-                                html.Label('Reihenfolge'),
+                                html.Label('Order of Arms'),
                                 dcc.Dropdown(
                                     id='first_move',
                                     options=[
-                                        {'label': 'Optimaler Arm, suboptimaler Arm', 'value': 'opt'},
-                                        {'label': 'Suboptimaler Arm, optimaler Arm', 'value': 'subopt'}
+                                        {'label': '(optimal arm, suboptimal arm)', 'value': 'opt'},
+                                        {'label': '(suboptimal arm, optimal arm)', 'value': 'subopt'}
                                     ],
-                                    placeholder='Select...',  # Dies entfernt die "Select..."-Option
+                                    placeholder='Select...',  
                                     clearable=False,
                                     value='opt'
                                 ),
@@ -101,21 +101,29 @@ app.layout = html.Div(
                                         {'label': '0.05', 'value': '0.05'},
                                         {'label': '0.1', 'value': '0.1'}
                                     ],
-                                    placeholder='Select...',  # Dies entfernt die "Select..."-Option
+                                    placeholder='Select...',  
                                     clearable=False,
                                     value='0.05'
                                 ),
-                                html.Label('Algorithmus auswählen'),
+                                html.Label('Algorithm for Fig. 5'),
                                 dcc.Dropdown(
                                     id='selected_algorithm',
                                     options=[{'label': algo, 'value': algo} for algo in algorithm_data],
-                                    placeholder='Select...',  # Dies entfernt die "Select..."-Option
-                                    clearable=False, # Optionen können nicht abgewählt werden
+                                    placeholder='Select...',  
+                                    clearable=False, 
+                                    value='3_UCB'
+                                ),
+                                html.Label('Algorithm for Fig. 5'),
+                                dcc.Dropdown(
+                                    id='selected_algorithm',
+                                    options=[{'label': algo, 'value': algo} for algo in algorithm_data],
+                                    placeholder='Select...',  
+                                    clearable=False, 
                                     value='3_UCB'
                                 ),
                             ]
                         ),
-                        html.H2("Legende"),
+                        html.H2("Legend"),
                         html.Ul(
                             children=[html.Li(algo, style={'color': color}) for algo, color in zip(algorithms, colors)]
                         )
@@ -157,7 +165,7 @@ app.layout = html.Div(
      Input('alpha', 'value')]
 )
 def update_plots(selected_algorithm, arm_distribution, first_move, selected_alpha):
-    # Daten laden
+    # lod data
     data = {}
     for algo in algorithm_data:
         data[algo] = load_data(algo, arm_distribution, first_move)
@@ -330,6 +338,6 @@ def update_plots(selected_algorithm, arm_distribution, first_move, selected_alph
 
     #return fig1, fig2, fig3, fig4, fig5, fig6
 
-# Startet die Dash App
+# Start Dash App
 if __name__ == '__main__':
     app.run_server(debug=True)
