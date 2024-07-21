@@ -12,18 +12,15 @@ app.title = "Simulation of variance-aware algorithms for Stochastic Bandit Probl
 
 # Dateipfade der CSV-Dateien
 base_path = r"C:/Users/canis/OneDrive/Dokumente/uni/uni-surface/FSS 2024/BA/bachelorarbeit_vrlfg/BA/github/BA_code/2_algorithms_results"
-algorithm_data = [
-    "1_ETC", "2_Greedy", "3_UCB", "4_UCB-Normal", "5_UCB-Tuned", "6_UCB-V", "7_PAC_UCB", "8_UCB_Improved", "9_EUCBV",
-    "not_variance_aware", "variance_aware"
+algorithm_data= [
+    "1_ETC", "2_Greedy", "3_UCB", "4_UCB-Normal", "5_UCB-Tuned", "6_UCB-V", "7_PAC_UCB", "8_UCB_Improved", "9_EUCBV"
 ]
 
 algorithms = [
-    "ETC", "Greedy", "UCB", "UCB-Normal", "UCB-Tuned", "UCB-V", "PAC-UCB", "UCB-Improved", "EUCBV",
-    "Not Variance Aware", "Variance Aware"
+    "ETC", "Greedy", "UCB", "UCB-Normal", "UCB-Tuned", "UCB-V", "PAC-UCB", "UCB-Improved", "EUCBV"
 ]
-
 colors = [
-    'blue', 'green', 'red', 'cyan', 'magenta', 'yellow', 'black', 'orange', 'purple', 'brown', 'pink'
+    'blue', 'green', 'red', 'cyan', 'magenta', 'yellow', 'black', 'orange', 'purple'
 ]
 
 # Dummy-Plot Funktion
@@ -207,62 +204,31 @@ def update_plots(selected_algorithm, arm_distribution, first_move, selected_alph
         showlegend=False
     )
 
-    # Plot 3: Average Zeros and Ones Count
+    # Plot 3: Boxplot
     fig3 = go.Figure()
-
-    # Datenstrukturen zum Speichern der Werte
-    zeros_counts = []
-    ones_counts = []
-    algo_labels_zeros = []
-    algo_labels_ones = []
-
-    # Durchlaufe die Algorithmen
-    for algo in algorithm_data:
-        # Laden der Daten für den spezifischen Algorithmus
-        df_results, df_average = data[algo]
-        
-        # Extrahieren der Werte
-        zero_count = df_average['Average Zeros Count'].iloc[-1]
-        one_count = df_average['Average Ones Count'].iloc[-1]
-        
-        # Hinzufügen der Werte zur Liste
-        zeros_counts.append(zero_count)
-        ones_counts.append(one_count)
-        
-        # Erstellen der Labels für die X-Achse
-        algo_labels_zeros.append(f'{algo} - Zeros')
-        algo_labels_ones.append(f'{algo} - Ones')
-
-    # Erstellen der Balken für die Average Zeros Count
-    fig3.add_trace(go.Bar(
-        x=algo_labels_zeros,
-        y=zeros_counts,
-        name='Average Zeros Count',
-        marker_color='blue'
-    ))
-
-    # Erstellen der Balken für die Average Ones Count
-    fig3.add_trace(go.Bar(
-        x=algo_labels_ones,
-        y=ones_counts,
-        name='Average Ones Count',
-        marker_color='orange'
-    ))
-
-    # Layout-Anpassungen
+    for algo, color in zip(algorithm_data, colors):
+        df = data[algo][1]
+        fig3.add_trace(go.Box(
+            y=[df['Average Zeros Count'].iloc[-1]],
+            name=f'{algo} - Zeros',
+            marker_color=color
+        ))
+        fig3.add_trace(go.Box(
+            y=[df['Average Ones Count'].iloc[-1]],
+            name=f'{algo} - Ones',
+            marker_color=color
+        ))
     fig3.update_layout(
-        title='Average Zeros and Ones Count',
-        xaxis_title='Algorithm',
-        yaxis_title='Count',
-        barmode='group',
-        xaxis=dict(
-            tickvals=list(range(len(algo_labels_zeros) + len(algo_labels_ones))),
-            ticktext=algo_labels_zeros + algo_labels_ones,
-            tickangle=45
-        )
+        title='Fig.3: Count of Zeros and Ones',
+        xaxis_title="Zeros and Ones",
+        yaxis_title="Count",
+        paper_bgcolor='white',
+        plot_bgcolor='white',
+        font={'color': 'black'},
+        showlegend=False
     )
 
-    # Plot 4: Distribution of Total Regret at Timestep 100000
+     # Plot 4: Distribution of Total Regret at Timestep 100000
     selected_data = data[selected_algorithm][0]
     df_100k = selected_data[selected_data['Timestep'] == 100000]
     fig4 = go.Figure(go.Histogram(x=df_100k['Total Regret'], marker_color=colors[algorithm_data.index(selected_algorithm)]))
@@ -276,6 +242,20 @@ def update_plots(selected_algorithm, arm_distribution, first_move, selected_alph
         showlegend=False
     )
 
+    # Plot 4: Distribution of Total Regret at Timestep 100000
+    # selected_data = data[selected_algorithm][0]
+    # df_100k = selected_data[selected_data['Timestep'] == 100000]
+    # fig4 = go.Figure(go.Histogram(x=df_100k['Total Regret'], marker_color=colors[algorithm_data.index(selected_algorithm)]))
+    # fig4.update_layout(
+    #     title=f'Distribution of Total Regret at Timestep 100.000 for {selected_algorithm}',
+    #     xaxis_title="Total Regret",
+    #     yaxis_title="Count",
+    #     paper_bgcolor='white',
+    #     plot_bgcolor='white',
+    #     font={'color': 'black'},
+    #     showlegend=False
+    # )
+
     # Plot 5: Value at Risk Function
     # fig5 = go.Figure()
     # for algo, color in zip(algorithm_data, colors):
@@ -285,6 +265,31 @@ def update_plots(selected_algorithm, arm_distribution, first_move, selected_alph
     #     fig5.add_trace(go.Scatter(
     #         x=timesteps,
     #         y=VaR_values,
+    #         mode='lines+markers',
+    #         name=algo,
+    #         line=dict(color=color)
+    #     ))
+
+    # Plot 5: Value at Risk Function
+    # fig5 = go.Figure()
+    # for algo, color in zip(algorithm_data, colors):
+    #     df = data[algo][1]
+    #     VaR_values = df.groupby('Timestep')['Average Regret'].apply(lambda x: x.quantile(selected_alpha))
+    #     fig5.add_trace(go.Scatter(
+    #         x=df['Timestep'].unique(),
+    #         y=VaR_values,
+    #         mode='lines+markers',
+    #         name=algo,
+    #         line=dict(color=color)
+    #     ))
+
+    # # Plot 5: Empirical Means over Timesteps
+    # fig5 = go.Figure()
+    # for algo, color in zip(algorithm_data, colors):
+    #     df = data[algo][1]
+    #     fig5.add_trace(go.Scatter(
+    #         x=df['Timestep'],
+    #         y=df['Empirical Means'],
     #         mode='lines+markers',
     #         name=algo,
     #         line=dict(color=color)
@@ -320,7 +325,10 @@ def update_plots(selected_algorithm, arm_distribution, first_move, selected_alph
         showlegend=False
     )
 
+    
     return fig1, fig2, fig3, fig4, fig6
+
+    #return fig1, fig2, fig3, fig4, fig5, fig6
 
 # Start Dash App
 if __name__ == '__main__':
