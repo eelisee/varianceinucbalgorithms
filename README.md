@@ -19,9 +19,9 @@ This repository contains the implementation of various multi-armed bandit algori
 
 The bandit model used in this repository focuses on a 2-armed bandit problem with Bernoulli-distributed arms for most algorithms and Gaussian-distributed arms for the UCB-Normal algorithm. The arms are set with three different reward scenarios:
 
-1. \([0.9, 0.8]\)
-2. \([0.9, 0.895]\)
-3. \([0.5, 0.495]\)
+1. [0.9, 0.8]
+2. [0.9, 0.895]
+3. [0.5, 0.495]
 
 For the UCB-Normal algorithm, the corresponding variances are adjusted to match the Bernoulli settings.
 
