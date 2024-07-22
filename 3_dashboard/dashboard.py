@@ -22,11 +22,14 @@ algorithm_data = [
 
 algorithms = [
     "ETC", "Greedy", "UCB", "UCB-Normal", "UCB-Tuned", "UCB-V", "PAC-UCB", "UCB-Improved", "EUCBV",
-    "Not Variance Aware", "Variance Aware"
+    "Not Variance Aware (including ETC, Greedy, UCB, PAC-UCB, UCB-Improved)", "Variance Aware (including UCB-Tuned, UCB-V, EUCBV)"
 ]
 
 colors = [
-    'blue', 'green', 'red', 'cyan', 'magenta', 'yellow', 'black', 'orange', 'purple', 'brown', 'pink'
+    'blue', 'green', '#DF3A01', '#58D3F7', '#FE2E9A', '#D7DF01', 'black', 'orange', 'purple', 'brown', '#DA75CC'
+]
+line_styles = [
+    'solid', 'solid', 'solid', 'dot', 'dot', 'dot', 'solid', 'solid', 'dot', 'solid', 'dot'
 ]
 
 # Dummy-Plot Funktion
@@ -76,13 +79,13 @@ app.layout = html.Div(
                         html.H2("Settings"),
                         html.Div(
                             children=[
-                                html.Label('Distribution of Arms'),
+                                html.Label('Distribution of Arms: [optimal arm, suboptimal arm]'),
                                 dcc.Dropdown(
                                     id='arm_distribution',
                                     options=[
-                                        {'label': '&mu* = 0.9, &mu_suboptimal = 0.8', 'value': '1'},
-                                        {'label': '&mu* = 0.9, &mu_suboptimal = 0.895', 'value': '2'},
-                                        {'label': '&mu* = 0.5, &mu_suboptimal = 0.495', 'value': '3'}
+                                        {'label': '[0.9, 0.8]', 'value': '1'},
+                                        {'label': '[0.9, 0.895]', 'value': '2'},
+                                        {'label': '[0.5, 0.495]', 'value': '3'}
                                     ],
                                     placeholder='Select...',  # Dies entfernt die "Select..."-Option
                                     clearable=False,
@@ -99,7 +102,7 @@ app.layout = html.Div(
                                     clearable=False,
                                     value='opt'
                                 ),
-                                html.Label('Alpha'),
+                                html.Label('Alpha for Fig. 5'),
                                 dcc.Dropdown(
                                     id='alpha',
                                     options=[
@@ -170,14 +173,14 @@ def update_plots(selected_algorithm, arm_distribution, first_move, selected_alph
 
     # Plot 1: Average Total Reward
     fig1 = go.Figure()
-    for algo, color in zip(algorithm_data, colors):
+    for algo, color, line_style in zip(algorithm_data, colors, line_styles):
         df = data[algo][1]
         fig1.add_trace(go.Scatter(
             x=df['Timestep'],
             y=df['Average Total Reward'],
             mode='lines+markers',
             name=algo,
-            line=dict(color=color)
+            line=dict(color=color, dash=line_style)
         ))
     fig1.update_layout(
         title='Fig. 1: Average Total Reward over Timesteps',
@@ -191,14 +194,14 @@ def update_plots(selected_algorithm, arm_distribution, first_move, selected_alph
 
     # Plot 2: Average Regret
     fig2 = go.Figure()
-    for algo, color in zip(algorithm_data, colors):
+    for algo, color, line_style in zip(algorithm_data, colors, line_styles):
         df = data[algo][1]
         fig2.add_trace(go.Scatter(
             x=df['Timestep'],
             y=df['Average Regret'],
             mode='lines+markers',
             name=algo,
-            line=dict(color=color)
+            line=dict(color=color, dash=line_style)
         ))
     fig2.update_layout(
         title='Fig.2: Average Total Regret over Timesteps',
@@ -254,7 +257,7 @@ def update_plots(selected_algorithm, arm_distribution, first_move, selected_alph
 
     # Layout-Anpassungen
     fig3.update_layout(
-        title='Average Zeros and Ones Count',
+        title='Fig. 3: Average Zeros and Ones Count',
         xaxis_title='Algorithm',
         yaxis_title='Count',
         barmode='group',
@@ -270,7 +273,7 @@ def update_plots(selected_algorithm, arm_distribution, first_move, selected_alph
     df_100k = selected_data[selected_data['Timestep'] == 100000]
     fig4 = go.Figure(go.Histogram(x=df_100k['Total Regret'], marker_color=colors[algorithm_data.index(selected_algorithm)]))
     fig4.update_layout(
-        title=f'Distribution of Total Regret at Timestep 100.000 for {selected_algorithm}',
+        title=f'Fig. 4: Distribution of Total Regret at Timestep 100.000 for {selected_algorithm}',
         xaxis_title="Total Regret",
         yaxis_title="Count",
         paper_bgcolor='white',
@@ -284,7 +287,7 @@ def update_plots(selected_algorithm, arm_distribution, first_move, selected_alph
     alpha_value = float(selected_alpha)
     
     fig5 = go.Figure()
-    for algo, color in zip(algorithm_data, colors):
+    for algo, color, line_style in zip(algorithm_data, colors, line_styles):
         var_file = os.path.join(var_base_path, f"{algo}_VaR_alpha_{alpha_value}.csv")
         df_var = pd.read_csv(var_file)
         
@@ -293,11 +296,11 @@ def update_plots(selected_algorithm, arm_distribution, first_move, selected_alph
             y=df_var['Value_at_Risk'],
             mode='lines+markers',
             name=algo,
-            line=dict(color=color)
+            line=dict(color=color, dash=line_style)
         ))
     
     fig5.update_layout(
-        title=f'Value at Risk for selected alpha={selected_alpha}',
+        title=f'Fig. 5: Value at Risk for selected alpha={selected_alpha}',
         xaxis_title="Timesteps",
         yaxis_title="Value at Risk",
         paper_bgcolor='white',
@@ -306,43 +309,19 @@ def update_plots(selected_algorithm, arm_distribution, first_move, selected_alph
         showlegend=True
     )
 
-
-    # Plot 5: Value at Risk Function
-    # fig5 = go.Figure()
-    # for algo, color in zip(algorithm_data, colors):
-    #     df = data[algo][0]
-    #     timesteps = df['Timestep'].unique()
-    #     VaR_values = [df[df['Timestep'] == t]['Total Regret'].quantile(1 - selected_alpha) for t in timesteps]
-    #     fig5.add_trace(go.Scatter(
-    #         x=timesteps,
-    #         y=VaR_values,
-    #         mode='lines+markers',
-    #         name=algo,
-    #         line=dict(color=color)
-    #     ))
-    # fig5.update_layout(
-    #     title=f'Value at Risk for selected alpha={selected_alpha}',
-    #     xaxis_title="Timesteps",
-    #     yaxis_title="Value at Risk",
-    #     paper_bgcolor='white',
-    #     plot_bgcolor='white',
-    #     font={'color': 'black'},
-    #     showlegend=False
-    # )
-
     # Plot 6: Fraction of Suboptimal Arms Pulled
     fig6 = go.Figure()
-    for algo, color in zip(algorithm_data, colors):
+    for algo, color, line_style in zip(algorithm_data, colors, line_styles):
         df = data[algo][1]
         fig6.add_trace(go.Scatter(
             x=df['Timestep'],
             y=df['Average Suboptimal Arms'] / df['Timestep'],
             mode='lines+markers',
             name=algo,
-            line=dict(color=color)
+            line=dict(color=color, dash=line_style)
         ))
     fig6.update_layout(
-        title='Proportion of Suboptimal Arms pulled in comparison to all Arms pulled',
+        title='Fig. 6: Proportion of Suboptimal Arms pulled in comparison to all Arms pulled',
         xaxis_title="Timesteps",
         yaxis_title="Proportion of Suboptimal Arms",
         paper_bgcolor='white',
