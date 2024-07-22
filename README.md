@@ -1,30 +1,79 @@
-# Introduction to Bandit Algorithms
+# Variance-aware Algorithms for Stochastic Bandit Problems
 Exploration-Exploitation Trade-Off of Bandit Algorithms in Comparison
 
-This repository contains simulations of three bandit algorithms: Explore-then-Commit (ETC), epsilon-greedy, and Upper Confidence Bound (UCB). Below is a brief overview of each algorithm's functionality:
+This repository contains the implementation of various multi-armed bandit algorithms and a dashboard for visualizing their performance. The goal is to compare the effectiveness of different algorithms in maximizing rewards and minimizing regret over time. Below is a brief overview of each algorithm's functionality:
 
-- **ETC (Explore-then-Commit)**: This algorithm initially explores all available arms for a certain number of rounds and then commits to the arm with the highest estimated reward.
+- **ETC (Explore-then-Commit)**: Explores all available arms for a certain number of rounds before committing to the arm with the highest estimated reward.
+- **Epsilon-Greedy**: Balances exploration and exploitation by choosing a random action with probability epsilon and the action with the highest estimated reward with probability \(1 - \epsilon\).
+- **UCB (Upper Confidence Bound)**: Selects the arm with the highest upper confidence bound to balance exploration and exploitation.
+- **UCB-Normal**: A variant of UCB designed for normally distributed rewards.
+- **UCB-Tuned**: Adjusts the confidence bound by considering the variance of the rewards.
+- **UCB-V**: Incorporates variance estimates into the upper confidence bounds.
+- **PAC-UCB**: Guarantees with high probability that the regret is close to the optimal policy.
+- **UCB-Improved**: Enhances UCB with more sophisticated exploration strategies.
+- **EUCBV (Efficient-UCB with Variance)**: Uses empirical estimates of variance to adjust the upper confidence bounds.
+- **Not Variance Aware**: A combined result of algorithms that do not consider variance.
+- **Variance Aware**: A combined result of algorithms that consider variance.
 
-- **Epsilon-Greedy**: The epsilon-greedy algorithm balances exploration and exploitation by choosing a random action with probability epsilon and the action with the highest estimated reward with probability 1-epsilon.
+## Bandit Model
 
-- **UCB (Upper Confidence Bound)**: UCB algorithm estimates the upper confidence bound for each arm's reward and selects the arm with the highest upper confidence bound for exploitation.
+The bandit model used in this repository focuses on a 2-armed bandit problem with Bernoulli-distributed arms for most algorithms and Gaussian-distributed arms for the UCB-Normal algorithm. The arms are set with three different reward scenarios:
 
-The arms in the bandit model are simulated using Bernoulli random variables. Specifically, the arms are designed to have expected rewards close to each other, as discussed in Chapter 1, to challenge the UCB algorithm's ability to differentiate between optimal and suboptimal arms.
+1. \([0.9, 0.8]\)
+2. \([0.9, 0.895]\)
+3. \([0.5, 0.495]\)
+
+For the UCB-Normal algorithm, the corresponding variances are adjusted to match the Bernoulli settings.
 
 Each algorithm is run for 100 rounds, and the results are stored in separate directories for different time steps. Additionally, there is a 'results_average' file for each algorithm, providing the average values for each time step based on 100 samples.
 
-Visualizations and dashboards were created using Plotly and Dash. There are two dashboards available:
+## Plots in the Dashboard
 
-1. **Main Dashboard**: This dashboard contains three plots:
-   - Total reward over the number of time steps for each algorithm (logarithmic scale).
-   - Total regret over the number of time steps for each algorithm (logarithmic scale).
-   - Number of optimal arm pulls over the number of time steps for each algorithm (logarithmic scale).
+Visualizations and dashboards were created using Plotly and Dash. There is a dashboard available with the following 
 
-2. **Comparison Dashboard**: This dashboard compares the frequency of 0s and 1s drawn by each algorithm at time step 100. This comparison is essential as it reflects not only the influence of the optimal arm but also the potential positive influence of suboptimal arms.
+1. **Average Total Reward Over Time**: Displays how effectively each algorithm maximizes rewards over time.
+2. **Average Regret Over Time**: Shows how well each algorithm minimizes regret over time.
+3. **Reward Distribution**: A boxplot showing the distribution of zero and one rewards for each algorithm.
+4. **Distribution of Total Regret at Timestep 100,000**: A histogram of total regret values at timestep 100,000 across 100 iterations for a selected algorithm.
+5. **Value-at-Risk (VaR) Function**: Displays the VaR function for alpha values 0.01, 0.05, and 0.1, indicating the maximum potential loss at a given confidence level.
+6. **Proportion of Suboptimal Arms Pulled**: Shows the proportion of suboptimal arm selections compared to all selections up to each timestep.
 
-The algorithms were rigorously cross-validated by examining metrics such as regret relative to the number of pulls of suboptimal arms and the frequency of 1s drawn compared to the total reward.
+## Setup Instructions
 
-For further details on the algorithms, simulation setup, and visualizations, please refer to the corresponding sections in the associated research paper.
+1. **Clone the Repository**
+
+   ```bash
+   git clone https://github.com/your-username/your-repo-name.git
+   cd your-repo-name
+   
+2. **Install Dependencies**
+
+   Ensure you have Python installed. Then, install the required packages using pip:
+   pip install -r requirements.txt
+
+3. **Run Algorithms**
+   
+   Navigate to the 1_algorithms_code directory and run the algorithms to generate results:
+   
+   python 1_ETC.py
+   python 2_Greedy.py
+   ...
+   python 9_EUCBV.py
+
+   You can also calculate the average results and VaR values:
+
+   python calculate_average.py
+   python calculate_var.py
+
+4. **Run the Dashboard**
+
+   Navigate to the 3_dashboard directory and start the dashboard:
+   
+   python dashboard.py
+
+   Open your browser and go to http://127.0.0.1:8050 to view the dashboard.
+   
+For further details on the algorithms, simulation setup, and visualizations, please refer to the corresponding sections in the associated thesis in 0_general.
 
 
 
