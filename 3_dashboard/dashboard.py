@@ -12,6 +12,9 @@ app.title = "Simulation of variance-aware algorithms for Stochastic Bandit Probl
 
 # Dateipfade der CSV-Dateien
 base_path = r"C:/Users/canis/OneDrive/Dokumente/uni/uni-surface/FSS 2024/BA/bachelorarbeit_vrlfg/BA/github/BA_code/2_algorithms_results"
+# Layout-Pfade für die vorab berechneten Value-at-Risk-Daten
+var_base_path = r"C:/Users/canis/OneDrive/Dokumente/uni/uni-surface/FSS 2024/BA/bachelorarbeit_vrlfg/BA/github/BA_code/2_algorithms_results/Value_at_Risk"
+
 algorithm_data = [
     "1_ETC", "2_Greedy", "3_UCB", "4_UCB-Normal", "5_UCB-Tuned", "6_UCB-V", "7_PAC_UCB", "8_UCB_Improved", "9_EUCBV",
     "not_variance_aware", "variance_aware"
@@ -108,7 +111,7 @@ app.layout = html.Div(
                                     clearable=False,
                                     value='0.05'
                                 ),
-                                html.Label('Algorithm for Fig. 5'),
+                                html.Label('Algorithm for Fig. 4'),
                                 dcc.Dropdown(
                                     id='selected_algorithm',
                                     options=[{'label': algo, 'value': algo} for algo in algorithm_data],
@@ -152,7 +155,7 @@ app.layout = html.Div(
      Output('plot2', 'figure'),
      Output('plot3', 'figure'),
      Output('plot4', 'figure'),
-     #Output('plot5', 'figure'),
+     Output('plot5', 'figure'),
      Output('plot6', 'figure')],
     [Input('selected_algorithm', 'value'),
      Input('arm_distribution', 'value'),
@@ -160,7 +163,7 @@ app.layout = html.Div(
      Input('alpha', 'value')]
 )
 def update_plots(selected_algorithm, arm_distribution, first_move, selected_alpha):
-    # lod data
+    # laod data
     data = {}
     for algo in algorithm_data:
         data[algo] = load_data(algo, arm_distribution, first_move)
@@ -276,6 +279,34 @@ def update_plots(selected_algorithm, arm_distribution, first_move, selected_alph
         showlegend=False
     )
 
+
+    # Plot 5: Value at Risk Function
+    alpha_value = float(selected_alpha)
+    
+    fig5 = go.Figure()
+    for algo, color in zip(algorithm_data, colors):
+        var_file = os.path.join(var_base_path, f"{algo}_VaR_alpha_{alpha_value}.csv")
+        df_var = pd.read_csv(var_file)
+        
+        fig5.add_trace(go.Scatter(
+            x=df_var['Timestep'],
+            y=df_var['Value_at_Risk'],
+            mode='lines+markers',
+            name=algo,
+            line=dict(color=color)
+        ))
+    
+    fig5.update_layout(
+        title=f'Value at Risk for selected alpha={selected_alpha}',
+        xaxis_title="Timesteps",
+        yaxis_title="Value at Risk",
+        paper_bgcolor='white',
+        plot_bgcolor='white',
+        font={'color': 'black'},
+        showlegend=True
+    )
+
+
     # Plot 5: Value at Risk Function
     # fig5 = go.Figure()
     # for algo, color in zip(algorithm_data, colors):
@@ -320,7 +351,7 @@ def update_plots(selected_algorithm, arm_distribution, first_move, selected_alph
         showlegend=False
     )
 
-    return fig1, fig2, fig3, fig4, fig6
+    return fig1, fig2, fig3, fig4, fig5, fig6
 
 # Start Dash App
 if __name__ == '__main__':
