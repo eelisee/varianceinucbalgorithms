@@ -183,7 +183,7 @@ def update_plots(selected_algorithm, arm_distribution, first_move, selected_alph
             line=dict(color=color, dash=line_style)
         ))
     fig1.update_layout(
-        title='Fig. 1: Average Total Reward over Timesteps',
+        title='Fig. 1: Average Total Reward over Time',
         xaxis_title="Timesteps",
         yaxis_title="Average Total Reward",
         paper_bgcolor='white',
@@ -204,7 +204,7 @@ def update_plots(selected_algorithm, arm_distribution, first_move, selected_alph
             line=dict(color=color, dash=line_style)
         ))
     fig2.update_layout(
-        title='Fig.2: Average Total Regret over Timesteps',
+        title='Fig.2: Average Total Regret over Time',
         xaxis_title="Timesteps",
         yaxis_title="Average Total Regret",
         paper_bgcolor='white',
@@ -273,7 +273,7 @@ def update_plots(selected_algorithm, arm_distribution, first_move, selected_alph
     df_100k = selected_data[selected_data['Timestep'] == 100000]
     fig4 = go.Figure(go.Histogram(x=df_100k['Total Regret'], marker_color=colors[algorithm_data.index(selected_algorithm)]))
     fig4.update_layout(
-        title=f'Fig. 4: Distribution of Total Regret at Timestep 100.000 for {selected_algorithm}',
+        title=f'Fig. 4: Distribution of Total Regret at Time 100 000 for {selected_algorithm}',
         xaxis_title="Total Regret",
         yaxis_title="Count",
         paper_bgcolor='white',
