@@ -62,16 +62,17 @@ Visualizations and dashboards were created using Plotly and Dash. There is a das
    ...
    python 9_EUCBV.py
 
-   You can also calculate the average results and VaR values:
+5. You can also calculate the average results and VaR values:
 
    ```bash
    python calculate_average.py
    python calculate_var.py
 
-5. **Run the Dashboard**
+6. **Run the Dashboard**
 
    Navigate to the 3_dashboard directory and start the dashboard:
    
+   ```bash
    python dashboard.py
 
    Open your browser and go to http://127.0.0.1:8050 to view the dashboard.
