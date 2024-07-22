@@ -49,12 +49,14 @@ Visualizations and dashboards were created using Plotly and Dash. There is a das
 2. **Install Dependencies**
 
    Ensure you have Python installed. Then, install the required packages using pip:
+   ```bash
    pip install -r requirements.txt
 
-3. **Run Algorithms**
+4. **Run Algorithms**
    
    Navigate to the 1_algorithms_code directory and run the algorithms to generate results:
-   
+
+   ```bash
    python 1_ETC.py
    python 2_Greedy.py
    ...
@@ -62,10 +64,11 @@ Visualizations and dashboards were created using Plotly and Dash. There is a das
 
    You can also calculate the average results and VaR values:
 
+   ```bash
    python calculate_average.py
    python calculate_var.py
 
-4. **Run the Dashboard**
+5. **Run the Dashboard**
 
    Navigate to the 3_dashboard directory and start the dashboard:
    
