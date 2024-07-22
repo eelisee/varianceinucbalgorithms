@@ -16,7 +16,7 @@ base_path = r"C:/Users/canis/OneDrive/Dokumente/uni/uni-surface/FSS 2024/BA/bach
 var_base_path = r"C:/Users/canis/OneDrive/Dokumente/uni/uni-surface/FSS 2024/BA/bachelorarbeit_vrlfg/BA/github/BA_code/2_algorithms_results/Value_at_Risk"
 
 algorithm_data = [
-    "1_ETC", "2_Greedy", "3_UCB", "4_UCB-Normal", "5_UCB-Tuned", "6_UCB-V", "7_PAC_UCB", "8_UCB_Improved", "9_EUCBV",
+    "1_ETC", "2_Greedy", "3_UCB", "4_UCB-Normal", "5_UCB-Tuned", "6_UCB-V", "7_PAC-UCB", "8_UCB-Improved", "9_EUCBV",
     "not_variance_aware", "variance_aware"
 ]
 
