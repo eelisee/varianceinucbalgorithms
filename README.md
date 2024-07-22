@@ -75,7 +75,7 @@ Visualizations and dashboards were created using Plotly and Dash. There is a das
    ```bash
    python dashboard.py
 
-   Open your browser and go to http://127.0.0.1:8050 to view the dashboard.
+Open your browser and go to http://127.0.0.1:8050 to view the dashboard.
    
 For further details on the algorithms, simulation setup, and visualizations, please refer to the corresponding sections in the associated thesis in 0_general.
 
