@@ -1,7 +1,15 @@
 # Variance-aware Algorithms for Stochastic Bandit Problems
 Exploration-Exploitation Trade-Off of Bandit Algorithms in Comparison
 
-This repository contains the implementation of various multi-armed bandit algorithms and a dashboard for visualizing their performance. The goal is to compare the effectiveness of different algorithms in maximizing rewards and minimizing regret over time. Below is a brief overview of each algorithm's functionality:
+This repository contains the implementation of various multi-armed bandit algorithms and a dashboard for visualizing their performance. 
+
+## Research Gap and Motivation
+
+Multi-armed bandit (MAB) problems are fundamental to reinforcement learning, especially due to their inherent exploration-exploitation trade-off. While traditional algorithms like UCB and Epsilon-Greedy have been studied extensively, there is a notable gap in the literature when it comes to a systematic and empirical comparison between algorithms that incorporate variance estimates and those that do not. This project aims to address that gap.
+
+The core objective is to better understand how variance-aware decision strategies influence the performance of bandit algorithms. Although individual simulations exist for specific algorithms like UCB-V or EUCBV, there is no comprehensive side-by-side evaluation of variance-aware versus non-variance-aware approaches under consistent experimental conditions. This repository bridges that gap by combining theoretical foundations with interactive simulations, enabling a clear analysis of how variance-awareness impacts cumulative reward and regret in various environments. By providing a ready-to-use simulation dashboard, this project also facilitates easy replication and further exploration, encouraging transparent and accessible experimentation.
+
+Below is a brief overview of each algorithm's functionality:
 
 - **ETC (Explore-then-Commit)**: Explores all available arms for a certain number of rounds before committing to the arm with the highest estimated reward.
 - **Epsilon-Greedy**: Balances exploration and exploitation by choosing a random action with probability epsilon and the action with the highest estimated reward with probability \(1 - \epsilon\).
